@@ -1,17 +1,14 @@
-/*Crea la clase Controlador, en el paquete adecuado, con los atributos y métodos especificados en el diagrama.
- *Esta clase asignará los valores a los atributos y llamará al método setControlador de la clase Vista para que dicha clase tenga
- *una referencia a ésta. El método comenzar llamará al método comenzar de la vista. Los demás métodos llamarán a sus métodos homólogos
- *de la clase Modelo. Realiza el commit correspondiente.
- */
-
 package org.iesalandalus.programacion.biblioteca.mvc.controlador;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
 
 import javax.naming.OperationNotSupportedException;
 
 import org.iesalandalus.programacion.biblioteca.mvc.modelo.Modelo;
 import org.iesalandalus.programacion.biblioteca.mvc.modelo.dominio.Alumno;
+import org.iesalandalus.programacion.biblioteca.mvc.modelo.dominio.Curso;
 import org.iesalandalus.programacion.biblioteca.mvc.modelo.dominio.Libro;
 import org.iesalandalus.programacion.biblioteca.mvc.modelo.dominio.Prestamo;
 import org.iesalandalus.programacion.biblioteca.mvc.vista.Vista;
@@ -53,8 +50,7 @@ public class Controlador {
 		modelo.prestar(prestamo);
 	}
 
-	public void devolver(Prestamo prestamo, LocalDate fechaDevolucion)
-			throws OperationNotSupportedException, IllegalArgumentException, NullPointerException {
+	public void devolver(Prestamo prestamo, LocalDate fechaDevolucion) throws OperationNotSupportedException, IllegalArgumentException, NullPointerException {
 		modelo.devolver(prestamo, fechaDevolucion);
 	}
 
@@ -82,27 +78,31 @@ public class Controlador {
 		modelo.borrar(prestamo);
 	}
 
-	public Alumno[] getAlumnos() {
+	public List<Alumno> getAlumnos() {
 		return modelo.getAlumnos();
 	}
 
-	public Libro[] getLibros() {
+	public List<Libro> getLibros() {
 		return modelo.getLibros();
 	}
 
-	public Prestamo[] getPrestamos() {
+	public List<Prestamo> getPrestamos() {
 		return modelo.getPrestamos();
 	}
 
-	public Prestamo[] getPrestamos(Alumno alumno) {
+	public List<Prestamo> getPrestamos(Alumno alumno) {
 		return modelo.getPrestamos(alumno);
 	}
 
-	public Prestamo[] getPrestamos(Libro libro) {
+	public List<Prestamo> getPrestamos(Libro libro) {
 		return modelo.getPrestamos(libro);
 	}
 
-	public Prestamo[] getPrestamos(LocalDate fecha) {
+	public List<Prestamo> getPrestamos(LocalDate fecha) {
 		return modelo.getPrestamos(fecha);
+	}
+	
+	public Map<Curso, Integer> getEstadisticasMensualPorCurso(LocalDate fecha) {
+		return modelo.getEstadisticaMensualPorCurso(fecha);
 	}
 }
