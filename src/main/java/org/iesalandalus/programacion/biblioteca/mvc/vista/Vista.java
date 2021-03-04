@@ -1,10 +1,6 @@
-/*Crea la clase Vista, en el paquete adecuado, con los atributos y métodos especificados en el diagrama. 
- *Esta clase hará uso de los métodos de la clase Consola para pedir los datos y llamará al método adecuado de la clase Controlador.
- *El método comenzar será un bucle que mostrará el menú, pedirá la opcion deseada y la ejecutará, así hasta que la opción elegida sea SALIR.
- *El método terminar simplemente llamará al método terminar de la clase Controlador. Realiza el commit correspondiente.
- */
-
 package org.iesalandalus.programacion.biblioteca.mvc.vista;
+
+import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -80,12 +76,10 @@ public class Vista {
 
 	public void listarAlumnos() {
 		Consola.mostrarCabecera("LISTADO DE ALUMNOS");
-		Alumno[] listaAlumnos = controlador.getAlumnos();
-		if (listaAlumnos[0] != null) {
+		List<Alumno> listaAlumnos = controlador.getAlumnos();
+		if (listaAlumnos != null) {
 			for (Alumno alumno : listaAlumnos) {
-				if (alumno != null) {
 					System.out.println(alumno);
-				}
 			}
 		} else {
 			System.out.println("No hay alumnos que mostrar");
@@ -129,12 +123,10 @@ public class Vista {
 
 	public void listarLibros() {
 		Consola.mostrarCabecera("LISTADO DE LIBROS");
-		Libro[] listaLibros = controlador.getLibros();
-		if (listaLibros[0] != null) {
+		List<Libro> listaLibros = controlador.getLibros();
+		if (listaLibros != null) {
 			for (Libro libro : listaLibros) {
-				if (libro != null) {
 					System.out.println(libro);
-				}
 			}
 		} else {
 			System.out.println("No hay libros que mostrar");
@@ -188,12 +180,10 @@ public class Vista {
 
 	public void listarPrestamos() {
 		Consola.mostrarCabecera("LISTADO DE PRÉSTAMOS");
-		Prestamo[] prestamos = controlador.getPrestamos();
-		if (prestamos[0] != null) {
+		List<Prestamo> prestamos = controlador.getPrestamos();
+		if (prestamos != null) {
 			for (Prestamo prestamo : prestamos) {
-				if (prestamo != null) {
-					System.out.println(prestamo);
-				}
+				System.out.println(prestamo);
 			}
 		} else {
 			System.out.println("No hay préstamos para mostrar");
@@ -202,12 +192,10 @@ public class Vista {
 
 	public void listarPrestamosAlumno() {
 		Consola.mostrarCabecera("LISTADO DE PRÉSTAMOS POR ALUMNO");
-		Prestamo[] prestamos = controlador.getPrestamos(Consola.leerAlumno());
-		if (prestamos[0] != null) {
+		List<Prestamo> prestamos = controlador.getPrestamos(Consola.leerAlumno());
+		if (prestamos != null) {
 			for (Prestamo prestamo : prestamos) {
-				if (prestamo != null) {
-					System.out.println(prestamo);
-				}
+				System.out.println(prestamo);
 			}
 		} else {
 			System.out.println("No hay préstamos de dicho alumno");
@@ -216,12 +204,10 @@ public class Vista {
 
 	public void listarPrestamosLibro() {
 		Consola.mostrarCabecera("LISTADO DE PRÉSTAMOS POR LIBRO");
-		Prestamo[] prestamos = controlador.getPrestamos(Consola.leerLibro());
-		if (prestamos[0] != null) {
+		List<Prestamo> prestamos = controlador.getPrestamos(Consola.leerLibro());
+		if (prestamos != null) {
 			for (Prestamo prestamo : prestamos) {
-				if (prestamo != null) {
-					System.out.println(prestamo);
-				}
+				System.out.println(prestamo);
 			}
 		} else {
 			System.out.println("No hay préstamos de dicho libro");
@@ -230,16 +216,18 @@ public class Vista {
 
 	public void listarPrestamosFecha() {
 		Consola.mostrarCabecera("LISTADO DE PRÉSTAMOS POR FECHA");
-		Prestamo[] prestamos = controlador.getPrestamos(Consola.leerFecha());
-		if (prestamos[0] != null) {
+		List<Prestamo> prestamos = controlador.getPrestamos(Consola.leerFecha());
+		if (prestamos != null) {
 			for (Prestamo prestamo : prestamos) {
-				if (prestamo != null) {
-					System.out.println(prestamo);
-				}
+				System.out.println(prestamo);
 			}
 		} else {
 			System.out.println("No hay préstamos en dicha fecha");
 		}
+	}
+
+	public void mostrarEstadisticaPorCurso() {
+		controlador.getEstadisticasMensualPorCurso(Consola.leerFecha());
 	}
 
 }
