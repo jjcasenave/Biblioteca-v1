@@ -1,98 +1,65 @@
-/*Crea la clase Alumnos, en el paquete adecuado, con los atributos y métodos especificados en el diagrama y la visibilidad adecuada.
- *Recuerda que el método get devolverá una copia profunda de la colección. Se permitirá insertar elementos al final de la colección 
- *sin admitir repetidos, buscar y borrar desplazando los elementos hacia la izquierda para dejar el array compactado. 
- *Asegurate de que se pasan todos los tests asociados a esta clase. Realiza el commit correspondiente.
- */
+/*Refactoriza la clase Alumnos (y todas las necesarias para que todo siga funcionando igual) 
+ *para que utilice ArrayList en vez de Arrays. Realiza un commit.*/
 
 package org.iesalandalus.programacion.biblioteca.mvc.modelo.negocio;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.naming.OperationNotSupportedException;
 
 import org.iesalandalus.programacion.biblioteca.mvc.modelo.dominio.Alumno;
 
 public class Alumnos {
+
+	private List<Alumno> coleccionAlumnos;
+
+	public Alumnos() throws IllegalArgumentException, NullPointerException {
+		coleccionAlumnos = new ArrayList<>();
+	}
+
+/*Haz que el método get de la clase Alumnos se adecúe a la ordenación pedida en los requisitos. Realiza un commit.*/
 	
-	//Atributos
-	private int capacidad;
-	private int tamano;
-	private Alumno[] coleccionAlumnos;
-
-	//Metodos
-	public Alumnos(int capacidad) throws IllegalArgumentException, NullPointerException {
-		if (capacidad <= 0) {
-			throw new IllegalArgumentException("ERROR: La capacidad debe ser mayor que cero.");
-		}
-		this.capacidad = capacidad;
-		coleccionAlumnos = new Alumno[capacidad];
-		this.tamano = 0;
+	public List<Alumno> get() throws IllegalArgumentException, NullPointerException{
+		List<Alumno> alumnosOrdenados = copiaProfundaAlumnos();
+		alumnosOrdenados.sort(Comparator.comparing(Alumno::getCorreo));
+		return alumnosOrdenados;
 	}
 
-	public Alumno[] get() throws IllegalArgumentException, NullPointerException{
-		return copiaProfundaAlumnos();
-	}
-
-	private Alumno[] copiaProfundaAlumnos() throws IllegalArgumentException, NullPointerException {
-		Alumno[] copiaAlumnos = new Alumno[capacidad];
-		for (int i = 0; !tamanoSuperado(i); i++) {
-			copiaAlumnos[i] = new Alumno(coleccionAlumnos[i]);
+	private List<Alumno> copiaProfundaAlumnos() throws IllegalArgumentException, NullPointerException {
+		List<Alumno> copiaAlumnos = new ArrayList<>();
+		for (Alumno alumno : coleccionAlumnos) {
+			copiaAlumnos.add(new Alumno(alumno));
 		}
 		return copiaAlumnos;
 	}
 
 	public int getTamano() {
-		return tamano;
-	}
-
-	public int getCapacidad() {
-		return capacidad;
+		return coleccionAlumnos.size();
 	}
 
 	public void insertar(Alumno alumno) throws OperationNotSupportedException, IllegalArgumentException, NullPointerException {
 		if (alumno == null) {
 			throw new NullPointerException("ERROR: No se puede insertar un alumno nulo.");
 		}
-		int indice = buscarIndice(alumno);
-		if (capacidadSuperada(indice)) {
-			throw new OperationNotSupportedException("ERROR: No se aceptan más alumnos.");
-		}
-		if (tamanoSuperado(indice)) {
-			coleccionAlumnos[indice] = new Alumno(alumno);
-			tamano++;
+		int indice = coleccionAlumnos.indexOf(alumno);
+		if (indice == -1) {
+			coleccionAlumnos.add(new Alumno(alumno));
 		} else {
 			throw new OperationNotSupportedException("ERROR: Ya existe un alumno con ese correo.");
 		}
-	}
-
-	private int buscarIndice(Alumno alumno) {
-		int indice = 0;
-		boolean alumnoEncontrado = false;
-		while (!tamanoSuperado(indice) && !alumnoEncontrado) {
-			if (coleccionAlumnos[indice].equals(alumno)) {
-				alumnoEncontrado = true;
-			} else {
-				indice++;
-			}
-		}
-		return indice;
-	}
-
-	private boolean tamanoSuperado(int indice) {
-		return indice >= tamano;
-	}
-
-	private boolean capacidadSuperada(int indice) {
-		return indice >= capacidad;
 	}
 
 	public Alumno buscar(Alumno alumno) throws IllegalArgumentException, NullPointerException {
 		if (alumno == null) {
 			throw new IllegalArgumentException("ERROR: No se puede buscar un alumno nulo.");
 		}
-		int indice = buscarIndice(alumno);
-		if (tamanoSuperado(indice)) {
+		int indice = coleccionAlumnos.indexOf(alumno);
+		if (indice == -1) {
 			return null;
 		} else {
-			return new Alumno(coleccionAlumnos[indice]);
+			return new Alumno(coleccionAlumnos.get(indice));
 		}
 	}
 
@@ -100,21 +67,12 @@ public class Alumnos {
 		if (alumno == null) {
 			throw new IllegalArgumentException("ERROR: No se puede borrar un alumno nulo.");
 		}
-		int indice = buscarIndice(alumno);
-		if (tamanoSuperado(indice)) {
+		int indice = coleccionAlumnos.indexOf(alumno);
+		if (indice == -1) {
 			throw new OperationNotSupportedException("ERROR: No existe ningún alumno con ese correo.");
 		} else {
-			desplazarUnaPosicionHaciaIzquierda(indice);
+			coleccionAlumnos.remove(indice);
 		}
-	}
-
-	private void desplazarUnaPosicionHaciaIzquierda(int indice) {
-		int i;
-		for (i = indice; !tamanoSuperado(i); i++) {
-			coleccionAlumnos[i] = coleccionAlumnos[i + 1];
-		}
-		coleccionAlumnos[i] = null;
-		tamano--;
 	}
 
 }
