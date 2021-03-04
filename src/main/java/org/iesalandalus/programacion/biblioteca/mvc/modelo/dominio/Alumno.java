@@ -1,31 +1,19 @@
-/*Crea la clase Alumno, en el paquete adecuado, con los atributos y métodos especificados en el diagrama y la visibilidad adecuada.
- *Crea el constructor con parámetros y el constructor copia. Crea los métodos get y set con la visibilidad adecuada.
- *En todos los casos se debe comprobar la validez de los parámetros pasados antes de asignarlos y en caso de que no sean válidos
- *lanzar la excepción adecuada. Ten en cuenta los requisitos comentados al principio y recuerda formatear el nombre adecuadamente. 
- *El método getAlumnoFicticio simplemente devolverá un alumno con un nombre válido y curso válido y el correo pasado por parámetro 
- *y que luego utilizaremos para las búsquedas y los borrados. Crea los métodos hashCode, equals y toString. Asegurate de que se pasan
- *todos los tests asociados a esta clase. Realiza el commit correspondiente.
- */
-
 package org.iesalandalus.programacion.biblioteca.mvc.modelo.dominio;
 
 public class Alumno {
-	
-	//Atributos
-	private static String ER_NOMBRE = "[a-zA-ZÁáÉéÍíÓóÚú]+[\\s]+[a-zA-ZÁáÉéÍíÓóÚú\\s]*";
+
+	private static String ER_NOMBRE = "[a-zA-ZÁáÉéÍíÓóÚúÑñ]+[\\s]+[a-zA-ZÁáÉéÍíÓóÚúÑñ\\s]*";
 	private static String ER_CORREO = "\\w+[.]?\\w+[@]\\w+[.]\\w{2,5}";
 	private String nombre;
 	private String correo;
 	private Curso curso;
-	
-	//Constructor con parametros
+
 	public Alumno(String nombre, String correo, Curso curso) {
 		setNombre(nombre);
 		setCorreo(correo);
 		setCurso(curso);
 	}
-	
-	//Constructor copia
+
 	public Alumno(Alumno copia) {
 		if (copia == null) {
 			throw new NullPointerException("ERROR: No es posible copiar un alumno nulo.");
@@ -34,8 +22,7 @@ public class Alumno {
 		setCorreo(copia.getCorreo());
 		setCurso(copia.getCurso());
 	}
-	
-	//Metodos
+
 	public static Alumno getAlumnoFicticio(String correo) throws NullPointerException {
 		if (correo == null) {
 			throw new NullPointerException("ERROR: El correo no puede ser nulo.");
@@ -46,7 +33,21 @@ public class Alumno {
 		Alumno alumnoFicticio = new Alumno("Juanjo Casenave", correo, Curso.PRIMERO);
 		return alumnoFicticio;
 	}
-	
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	private void setNombre(String nombre) {
+		if (nombre == null) {
+			throw new NullPointerException("ERROR: El nombre no puede ser nulo.");
+		}
+		if (!nombre.matches(ER_NOMBRE)) {
+			throw new IllegalArgumentException("ERROR: El nombre no tiene un formato válido.");
+		}
+		this.nombre = formateaNombre(nombre);
+	}
+
 	private String formateaNombre(String nombre) {
 		String nombreFormateado = "";
 		int longitudDelNombre = nombre.length();
@@ -69,21 +70,6 @@ public class Alumno {
 			}
 		}
 		return nombreFormateado;
-	}
-	
-	//Getters y Setters
-	public String getNombre() {
-		return nombre;
-	}
-
-	private void setNombre(String nombre) {
-		if (nombre == null) {
-			throw new NullPointerException("ERROR: El nombre no puede ser nulo.");
-		}
-		if (!nombre.matches(ER_NOMBRE)) {
-			throw new IllegalArgumentException("ERROR: El nombre no tiene un formato válido.");
-		}
-		this.nombre = formateaNombre(nombre);
 	}
 
 	public String getCorreo() {
@@ -116,9 +102,7 @@ public class Alumno {
 		}
 
 	}
-	
-	
-	//Hash
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -126,8 +110,7 @@ public class Alumno {
 		result = prime * result + ((correo == null) ? 0 : correo.hashCode());
 		return result;
 	}
-	
-	//Equals
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -144,8 +127,7 @@ public class Alumno {
 			return false;
 		return true;
 	}
-	
-	//toString
+
 	@Override
 	public String toString() {
 		String[] iniciales = { "", "", "", "" };
